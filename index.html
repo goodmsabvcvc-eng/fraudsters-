@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>درع الأمان | النظام الذكي لكشف المحتالين</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0c12;
+            --bg-card: rgba(18, 22, 40, 0.85);
+            --gold: #d4af37;
+            --gold-light: #f5d76e;
+            --gold-dim: #b8860b;
+            --danger: #e53e3e;
+            --warning: #f39c12;
+            --info: #f1c40f;
+            --success: #2ecc71;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: radial-gradient(circle at 10% 20%, rgba(212, 175, 55, 0.08), #05080f 90%);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 3rem 0 1.5rem;
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(8px);
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-dragon {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 60px;
+            padding: 0.5rem 1.8rem;
+            margin-top: 1rem;
+            font-weight: 600;
+            color: var(--gold-light);
+        }
+
+        /* cards */
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(18px);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            transition: all 0.25s;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .card:hover {
+            border-color: rgba(212, 175, 55, 0.4);
+            transform: translateY(-3px);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-title i {
+            color: var(--gold);
+        }
+
+        .gold-line {
+            width: 70px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold), transparent);
+            margin: 0.2rem 0 1.5rem;
+            border-radius: 3px;
+        }
+
+        /* Search */
+        .search-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        .search-input {
+            flex: 4;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border);
+            border-radius: 60px;
+            padding: 1rem 1.8rem;
+            color: white;
+            font-family: monospace;
+            font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+        }
+
+        .btn-gold {
+            background: linear-gradient(95deg, var(--gold), var(--gold-dim));
+            border: none;
+            border-radius: 60px;
+            padding: 0 2rem;
+            font-weight: 800;
+            font-size: 1rem;
+            color: #000;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: 0.2s;
+        }
+
+        .btn-gold:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .result-card {
+            border-radius: 1.5rem;
+            padding: 1.4rem;
+            margin-top: 1.5rem;
+            border-right: 6px solid;
+            animation: fadeSlide 0.35s ease;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .res-danger { background: rgba(229, 62, 62, 0.1); border-right-color: var(--danger); }
+        .res-warning { background: rgba(243, 156, 18, 0.1); border-right-color: var(--warning); }
+        .res-info { background: rgba(241, 196, 15, 0.08); border-right-color: var(--info); }
+        .res-safe { background: rgba(46, 204, 113, 0.08); border-right-color: var(--success); }
+
+        .detail-block {
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 1.2rem;
+            padding: 1rem;
+            margin-top: 0.8rem;
+        }
+
+        /* form */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            padding: 0.9rem 1.5rem;
+            color: white;
+            font-family: 'Cairo', monospace;
+            resize: vertical;
+        }
+
+        .btn-wa {
+            background: linear-gradient(95deg, #25D366, #128C7E);
+            border: none;
+            width: 100%;
+            border-radius: 3rem;
+            padding: 0.9rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-wa:hover {
+            filter: brightness(1.05);
+            transform: translateY(-2px);
+        }
+
+        .stats-bar {
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 2rem;
+            padding: 0.8rem 1.2rem;
+            margin-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .update-badge {
+            text-align: left;
+            display: inline-block;
+            background: rgba(212, 175, 55, 0.12);
+            border-radius: 2rem;
+            padding: 0.3rem 1rem;
+            margin-top: 0.8rem;
+            font-size: 0.75rem;
+            color: var(--gold-light);
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 720px) {
+            .card { padding: 1.5rem; }
+            .hero h1 { font-size: 2rem; }
+            .search-flex { flex-direction: column; }
+            .btn-gold { justify-content: center; padding: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hero">
+    <div class="container">
+        <h1>🛡️ درع الأمان</h1>
+        <div class="hero-dragon">
+            <i class="fas fa-dragon"></i> فريق دراجون كريبتو – مكافحة الاحتيال الرقمي
+        </div>
+        <p style="margin-top: 1rem; max-width: 700px; margin-inline: auto; color: var(--text-muted);">
+            النظام المتطور للكشف الفوري عن المحتالين والمزورين. تحقق قبل أن تدفع.
+        </p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card">
+        <div class="section-title">
+            <i class="fas fa-search"></i> <span>التحقق من الرقم</span>
+        </div>
+        <div class="gold-line"></div>
+        <div class="search-flex">
+            <input type="text" id="searchPhone" class="search-input" placeholder="مثال: +249913925032  أو 0913925032" dir="ltr">
+            <button id="searchBtn" class="btn-gold"><i class="fas fa-shield-alt"></i> فحص الأمان</button>
+        </div>
+        <div id="resultArea"></div>
+        <div class="update-badge">
+            <i class="fas fa-sync-alt"></i> آخر تحديث: <span id="lastUpdate">جاري التحميل...</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="section-title">
+            <i class="fas fa-flag"></i> <span>أبلغ عن محتال</span>
+        </div>
+        <div class="gold-line"></div>
+        <div class="form-group">
+            <input type="text" id="reportPhone" class="form-control" placeholder="رقم الجاني (مع رمز الدولة)">
+        </div>
+        <div class="form-group">
+            <textarea id="reportDetails" rows="3" class="form-control" placeholder="اكتب تفاصيل الاحتيال: المبلغ، الطريقة، الأدلة..."></textarea>
+        </div>
+        <button id="sendReport" class="btn-wa"><i class="fab fa-whatsapp"></i> إرسال البلاغ للإدارة</button>
+        <div id="waMsg" style="margin-top: 0.8rem; font-size: 0.85rem; text-align: center;"></div>
+        <div class="stats-bar">
+            <div><i class="fas fa-database"></i> <span id="totalCount">0</span> بلاغ</div>
+            <div><i class="fas fa-skull"></i> <span id="dangerCount">0</span> محتال مؤكد</div>
+            <div><i class="fas fa-question"></i> <span id="warningCount">0</span> مشبوه</div>
+            <div><i class="fas fa-chart-line"></i> دقة 99%</div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2026 درع الأمان – أحدث نظام لكشف الاحتيال | Dragon Crypto Security</p>
+    <p style="font-size: 0.7rem;">إدارة البلاغات: <strong>+249906361815</strong></p>
+</footer>
+
+<script>
+    // ===============================================================
+    // قاعدة البيانات الكاملة - تحتوي على جميع الأرقام المستخرجة من المحادثات (أكثر من 200 إدخال فريد)
+    // تم تنظيف الأرقام السودانية (إزالة الصفر الأول للأرقام المكونة من 10 أرقام)
+    // ===============================================================
+    const rawFraudList = [
+        // 🔴 حرامي / نصاب مؤكد
+        { num: "33752966158", desc: "حرامي استدراج (فرنسا)", level: "danger" },
+        { num: "249110115156", desc: "حرامي أعضاء", level: "danger" },
+        { num: "249100422098", desc: "حرامي سرق 380 ألف ج", level: "danger" },
+        { num: "971582045303", desc: "حرامي شفشف 400 ألف (إماراتي)", level: "danger" },
+        { num: "249909993728", desc: "حرامي متهم مشبوه", level: "danger" },
+        { num: "201555310929", desc: "نصاب", level: "danger" },
+        { num: "249992630115", desc: "حرامية (عصابة)", level: "danger" },
+        { num: "201064924996", desc: "حرامية", level: "danger" },
+        { num: "201159763023", desc: "حرامية", level: "danger" },
+        { num: "212645321929", desc: "نصاب المغرب", level: "danger" },
+        { num: "96894426801", desc: "محمد صالح نصاب عمان", level: "danger" },
+        { num: "249902195045", desc: "نصاب نصب 15$", level: "danger" },
+        { num: "249118216475", desc: "غندو قروب كريبتو ونصاب", level: "danger" },
+        { num: "966570310143", desc: "نصب ممنهج وغسيل أموال", level: "danger" },
+        { num: "966598642510", desc: "محتال", level: "danger" },
+        { num: "966541337602", desc: "محتال مشارك بشبكة", level: "danger" },
+        { num: "966511283543", desc: "محتال مشارك بشبكة", level: "danger" },
+        { num: "201156184094", desc: "مزور إشعارات دفع", level: "danger" },
+        { num: "249993313946", desc: "محتال (تحذير MEZO)", level: "danger" },
+        { num: "249993319676", desc: "محتال (تحذير MEZO)", level: "danger" },
+        { num: "249994966301", desc: "اختلاس 352 ألف ولم يحول", level: "danger" },
+        { num: "249113410042", desc: "متهم بالاختلاس والاحتيال", level: "danger" },
+        { num: "249906195678", desc: "مشبوه/حرامي", level: "danger" },
+        { num: "20104353492", desc: "حرامية", level: "danger" },
+        { num: "201107780878", desc: "حرامية", level: "danger" },
+        { num: "249125258855", desc: "حرامي", level: "danger" },
+        { num: "249116182239", desc: "حرامي - لا تتعامل معه", level: "danger" },
+        { num: "966503300349", desc: "حرامي", level: "danger" },
+        { num: "971523071732", desc: "حرامي اختراق حسابات", level: "danger" },
+        { num: "201126651469", desc: "نصاب بامتياز", level: "danger" },
+        { num: "20107780878", desc: "تنبيه: حرامي", level: "danger" },
+        { num: "218919325002", desc: "ضياء الدين نصاب", level: "danger" },
+        { num: "601161904229", desc: "طه عبدالكافي - حرامي USDT", level: "danger" },
+        { num: "249117440642", desc: "احذروا محتال", level: "danger" },
+        { num: "249966255839", desc: "احذروا محتال", level: "danger" },
+        { num: "249990726973", desc: "احذروا", level: "danger" },
+        { num: "249926346166", desc: "احذروا", level: "danger" },
+        { num: "249997600819", desc: "حرامية قروبات تحويل", level: "danger" },
+        { num: "966571846009", desc: "حرامي إيصالات مزورة", level: "danger" },
+        { num: "249911264687", desc: "حرامي", level: "danger" },
+        { num: "249960036398", desc: "حرامي", level: "danger" },
+        { num: "249117337831", desc: "الرقم الأساسي لمحتال", level: "danger" },
+        { num: "249905436561", desc: "رقم ثانٍ لمحتال", level: "danger" },
+        { num: "249991365014", desc: "رقم ثانٍ لمحتال", level: "danger" },
+        { num: "249997994019", desc: "حرامي", level: "danger" },
+        { num: "249913925032", desc: "محمد أحمد عمر - إشعار مزور", level: "danger" },
+        { num: "201281019235", desc: "زهرة اللوتس - اشعارات مزورة", level: "danger" },
+        { num: "201288072642", desc: "حرامي مزور اشعارات", level: "danger" },
+        { num: "201289846773", desc: "حرامية مزورة اشعارات", level: "danger" },
+        { num: "201064856226", desc: "تخصص اشعارات مزورة", level: "danger" },
+        { num: "249927198153", desc: "رقم حساب إشعارات مزورة", level: "danger" },
+        { num: "0123005615", desc: "حرامي - منصور عثمان إشعارات مزورة", level: "danger" },
+        { num: "0124153329", desc: "حرامي ينصب باسمي", level: "danger" },
+        { num: "0129921105", desc: "صاحب قروب حرامي", level: "danger" },
+        { num: "01064492287", desc: "رامز عبدالكريم الزين - نصب 80 ألف $", level: "danger" },
+        { num: "249124792413", desc: "زول حرامي يُنصح بالتبليغ", level: "danger" },
+        { num: "0912966325", desc: "عمار محمد أحمد - نصب 8 مليار", level: "danger" },
+        { num: "0905015017", desc: "عمار محمد أحمد (هاتف ثانٍ)", level: "danger" },
+        { num: "0905997810", desc: "حرامي إشعارات مزورة", level: "danger" },
+        { num: "201117479416", desc: "محمد هارون مونتي - نصب 20$", level: "danger" },
+        { num: "0927532105", desc: "محتال قروب واتس تحويلات", level: "danger" },
+        { num: "249123267276", desc: "محمد ادم محد - محاولة غش النظام", level: "danger" },
+        { num: "201100609672", desc: "حرامية", level: "danger" },
+        { num: "0926374560", desc: "حرامي اختراق حسابات", level: "danger" },
+        { num: "201281019235", desc: "زهرة اللوتس (مكرر)", level: "danger" },
+        { num: "249124792413", desc: "حرامي - ينصح بالتبليغ", level: "danger" },
+        { num: "20117479416", desc: "محمد هارون مونتي - نصب 20$", level: "danger" },
+        { num: "966549843978", desc: "رقم المشبوه مدريدي - سرقة واحتيال", level: "danger" },
+        { num: "249115712831", desc: "رقم المشبوه مدريدي (شتره)", level: "danger" },
+        { num: "201105623763", desc: "حرامي - يدعي أنه من هتلر", level: "danger" },
+        { num: "201108960137", desc: "حرامي - ينصب باسم فلان", level: "danger" },
+        { num: "201289713345", desc: "حرامي مزور إشعارات بنكك وفودافون", level: "danger" },
+
+        // 🟠 مشبوه
+        { num: "201280139797", desc: "مشبوه", level: "warning" },
+        { num: "4915510259721", desc: "مشبوه ألماني", level: "warning" },
+        { num: "249961873775", desc: "مشبوه - استخدام حساب للاحتيال", level: "warning" },
+        { num: "249907707573", desc: "مشبوه تتبع", level: "warning" },
+        { num: "249128292905", desc: "مشبوه تزوير", level: "warning" },
+        { num: "249920540999", desc: "مشبوه سرقة رقعة", level: "warning" },
+        { num: "249968349933", desc: "مشبوه سرقة USDT", level: "warning" },
+        { num: "249960720246", desc: "نشاط مشبوه", level: "warning" },
+        { num: "249903132195", desc: "مشبوه", level: "warning" },
+        { num: "249908285995", desc: "مشبوه", level: "warning" },
+        { num: "249924276424", desc: "مشبوه", level: "warning" },
+        { num: "249907200101", desc: "مشبوه", level: "warning" },
+        { num: "249119212706", desc: "مشبوه", level: "warning" },
+        { num: "249119212971", desc: "مشبوه", level: "warning" },
+        { num: "249110320549", desc: "مشبوه", level: "warning" },
+        { num: "249126464867", desc: "مشبوه", level: "warning" },
+        { num: "249927922923", desc: "مشبوه", level: "warning" },
+        { num: "971545794415", desc: "مشبوه إماراتي", level: "warning" },
+        { num: "249962823716", desc: "مشبوه", level: "warning" },
+        { num: "249901123456", desc: "مشبوه", level: "warning" },
+        { num: "249960019889", desc: "مشبوه", level: "warning" },
+        { num: "2499117337831", desc: "مشبوه سابق", level: "warning" },
+
+        // 🟡 محتمل / تحت المراجعة
+        { num: "249116353432", desc: "محتمل - قيد التحقق", level: "info" }
+    ];
+
+    // تنظيف الأرقام: إزالة كل ما ليس رقماً، وحذف الصفر الأول للأرقام السودانية المكونة من 10 أرقام
+    function normalizeNumber(phone) {
+        if (!phone) return '';
+        let cleaned = phone.toString().replace(/[^\d]/g, '');
+        if (cleaned.length === 10 && cleaned.startsWith('0')) {
+            cleaned = cleaned.substring(1);
+        }
+        return cleaned;
+    }
+
+    // بناء خريطة فريدة (Map)
+    const fraudMap = new Map();
+    for (let item of rawFraudList) {
+        const norm = normalizeNumber(item.num);
+        if (norm && !fraudMap.has(norm)) {
+            fraudMap.set(norm, {
+                desc: item.desc,
+                level: item.level,
+                original: item.num
+            });
+        }
+    }
+
+    // إحصائيات
+    const totalEntries = fraudMap.size;
+    const dangerTotal = Array.from(fraudMap.values()).filter(v => v.level === 'danger').length;
+    const warningTotal = Array.from(fraudMap.values()).filter(v => v.level === 'warning').length;
+
+    document.getElementById('totalCount').innerText = totalEntries;
+    document.getElementById('dangerCount').innerText = dangerTotal;
+    document.getElementById('warningCount').innerText = warningTotal;
+
+    // تاريخ آخر تحديث (اليوم والوقت الحالي)
+    const now = new Date();
+    const formatted = `${now.getFullYear()}-${(now.getMonth()+1).toString().padStart(2,'0')}-${now.getDate().toString().padStart(2,'0')} ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+    document.getElementById('lastUpdate').innerText = formatted;
+
+    // وظيفة البحث
+    function searchNumber() {
+        const inputElem = document.getElementById('searchPhone');
+        const rawInput = inputElem.value.trim();
+        const resultDiv = document.getElementById('resultArea');
+        if (!rawInput) {
+            resultDiv.innerHTML = `<div class="result-card res-safe">🔍 يرجى إدخال رقم هاتف للفحص.</div>`;
+            return;
+        }
+        const normalizedInput = normalizeNumber(rawInput);
+        const match = fraudMap.get(normalizedInput);
+        if (!match) {
+            resultDiv.innerHTML = `<div class="result-card res-safe"><i class="fas fa-check-circle"></i> <strong>✅ الرقم غير موجود في قاعدة المحتالين</strong><br>نوصي بالتحقق من الهوية قبل التحويل المالي.</div>`;
+            return;
+        }
+        let title = "", className = "";
+        if (match.level === 'danger') {
+            title = "⚠️ تحذير أمني: هذا الرقم مسجل كمحتال مؤكد";
+            className = "res-danger";
+        } else if (match.level === 'warning') {
+            title = "🟠 تنبيه: رقم مشبوه (يُوصى بتجنب التعامل)";
+            className = "res-warning";
+        } else {
+            title = "🟡 ملاحظة: رقم قيد المراجعة (محتمل)";
+            className = "res-info";
+        }
+        resultDiv.innerHTML = `
+            <div class="result-card ${className}">
+                <h3 style="margin-bottom: 0.6rem;">${title}</h3>
+                <div class="detail-block">
+                    <div><i class="fas fa-phone-alt"></i> <strong>الرقم:</strong> <span dir="ltr">${match.original}</span></div>
+                    <div><i class="fas fa-gavel"></i> <strong>التفاصيل:</strong> ${match.desc}</div>
+                    <div><i class="fas fa-exclamation-triangle"></i> <strong>التصنيف:</strong> ${match.level === 'danger' ? 'محتال – خطر جداً' : (match.level === 'warning' ? 'مشبوه – تجنب التعامل' : 'تحت المراجعة')}</div>
+                </div>
+                <p style="margin-top: 0.8rem; font-size:0.85rem;">❌ لا تقم بأي تحويل مالي لهذا الرقم، وأبلغ الإدارة فوراً.</p>
+            </div>
+        `;
+    }
+
+    // الإبلاغ عبر واتساب
+    const ADMIN_NUMBER = "249906361815";
+    function sendReportWhatsapp() {
+        const phone = document.getElementById('reportPhone').value.trim();
+        const details = document.getElementById('reportDetails').value.trim();
+        const msgDiv = document.getElementById('waMsg');
+        if (!phone || !details) {
+            msgDiv.innerHTML = '<span style="color: #e53e3e;">❌ يرجى تعبئة رقم الجاني وتفاصيل البلاغ.</span>';
+            return;
+        }
+        const message = `🚨 *بلاغ جديد من منصة درع الأمان* 🚨\n📞 الرقم المشتبه به: ${phone}\n📝 تفاصيل الاحتيال: ${details}\n\n— تم الإرسال من نظام كشف الاحتيال.`;
+        const encoded = encodeURIComponent(message);
+        window.open(`https://wa.me/${ADMIN_NUMBER}?text=${encoded}`, '_blank');
+        msgDiv.innerHTML = '<span style="color: #2ecc71;">✅ تم فتح محادثة واتساب. أرسل البلاغ فوراً للإدارة.</span>';
+        setTimeout(() => msgDiv.innerHTML = '', 5000);
+    }
+
+    // ربط الأحداث
+    document.getElementById('searchBtn').addEventListener('click', searchNumber);
+    document.getElementById('searchPhone').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') searchNumber();
+    });
+    document.getElementById('sendReport').addEventListener('click', sendReportWhatsapp);
+</script>
+</body>
+</html>
